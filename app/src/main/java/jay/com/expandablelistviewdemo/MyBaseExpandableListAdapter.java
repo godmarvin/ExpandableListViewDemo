@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,11 +21,14 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
     private ArrayList<Group> gData;
     private ArrayList<ArrayList<Item>> iData;
     private Context mContext;
+    ExpandableListView exlist_lol;
 
-    public MyBaseExpandableListAdapter(ArrayList<Group> gData,ArrayList<ArrayList<Item>> iData, Context mContext) {
+    public MyBaseExpandableListAdapter(ArrayList<Group> gData,ArrayList<ArrayList<Item>> iData,
+                                       Context mContext,ExpandableListView exlist_lol) {
         this.gData = gData;
         this.iData = iData;
         this.mContext = mContext;
+        this.exlist_lol = exlist_lol;
     }
 
     @Override
@@ -121,7 +125,7 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
                     }
                 }
                 if(valiItemChecked(groupPosition,childPosition)){
-
+                    exlist_lol.collapseGroup(groupPosition);
                     gData.get(groupPosition).setChecked(true);
                     notifyDataSetChanged();
                 }

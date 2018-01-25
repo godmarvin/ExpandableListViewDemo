@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         lData.add(new Item(R.mipmap.iv_lol_icon12, "狗熊",false));
         iData.add(lData);
 
-        myAdapter = new MyBaseExpandableListAdapter(gData,iData,mContext);
+        myAdapter = new MyBaseExpandableListAdapter(gData,iData,mContext,exlist_lol);
         exlist_lol.setAdapter(myAdapter);
 
 
