@@ -1,2 +1,2 @@
 # ExpandableListViewDemo
-Test checkbox in ExpandableListViewDemo with checkBox 
+Test checkbox in ExpandableListViewDemo
