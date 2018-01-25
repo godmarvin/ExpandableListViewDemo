@@ -94,6 +94,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        exlist_lol.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+
+                if(gData.get(groupPosition).isChecked()){
+                    return true;
+                }
+                //false:可以展开与折叠;true:不能展开与折叠
+                return false;
+            }
+        });
 
     }
 }

@@ -66,7 +66,7 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 
-        ViewHolderGroup groupHolder;
+        final ViewHolderGroup groupHolder;
         if(convertView == null){
             convertView = LayoutInflater.from(mContext).inflate(
                     R.layout.item_exlist_group, parent, false);
@@ -77,15 +77,14 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
         }else{
             groupHolder = (ViewHolderGroup) convertView.getTag();
         }
-        groupHolder.checkBoxgroup.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        groupHolder.checkBoxgroup.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    System.out.println("isChecked"+isChecked);
-                gData.get(groupPosition).setChecked(isChecked);
-                    for(Item item :iData.get(groupPosition)){
-                        item.setChecked(isChecked);
-                    }
-                    notifyDataSetChanged();
+            public void onClick(View v) {
+                gData.get(groupPosition).setChecked(groupHolder.checkBoxgroup.isChecked());
+                for(Item item :iData.get(groupPosition)){
+                    item.setChecked(groupHolder.checkBoxgroup.isChecked());
+                }
+                notifyDataSetChanged();
             }
         });
         groupHolder.tv_group_name.setText(gData.get(groupPosition).getgName());
@@ -95,8 +94,8 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
 
     //取得显示给定分组给定子位置的数据用的视图
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        ViewHolderItem itemHolder;
+    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+        final ViewHolderItem itemHolder;
         if(convertView == null){
             convertView = LayoutInflater.from(mContext).inflate(
                     R.layout.item_exlist_item, parent, false);
@@ -111,7 +110,34 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
         itemHolder.img_icon.setImageResource(iData.get(groupPosition).get(childPosition).getiId());
         itemHolder.tv_name.setText(iData.get(groupPosition).get(childPosition).getiName());
         itemHolder.checkBoxItem.setChecked(iData.get(groupPosition).get(childPosition).isChecked());
+        itemHolder.checkBoxItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                iData.get(groupPosition).get(childPosition).setChecked(itemHolder.checkBoxItem.isChecked());
+                if(gData.get(groupPosition).isChecked()!=itemHolder.checkBoxItem.isChecked()){
+                    if(itemHolder.checkBoxItem.isChecked()==false){
+                        gData.get(groupPosition).setChecked(false);
+                        notifyDataSetChanged();
+                    }
+                }
+                if(valiItemChecked(groupPosition,childPosition)){
+
+                    gData.get(groupPosition).setChecked(true);
+                    notifyDataSetChanged();
+                }
+            }
+        });
         return convertView;
+    }
+
+    public boolean valiItemChecked(final int groupPosition, int childPosition){
+
+        for (Item item:iData.get(groupPosition)){
+            if(!item.isChecked()){
+            return false;
+            }
+        }
+        return true;
     }
 
     //设置子列表是否可选中
