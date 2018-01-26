@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
-
+                collectData();
                 Toast.makeText(mContext, "你点击了：" + iData.get(groupPosition).get(childPosition).getiName(), Toast.LENGTH_SHORT).show();
                 return true;
             }
@@ -101,10 +101,32 @@ public class MainActivity extends AppCompatActivity {
                 if(gData.get(groupPosition).isChecked()){
                     return true;
                 }
+                collectData();
                 //false:可以展开与折叠;true:不能展开与折叠
                 return false;
             }
         });
 
+
+        myAdapter.setCollectedInfo(new MyBaseExpandableListAdapter.CollectedInfo() {
+            @Override
+            public void collected() {
+                collectData();
+            }
+        });
+
+    }
+
+
+    public void collectData(){
+        for(int i=0;i<gData.size();i++){
+            //if(gData.get(i).isChecked()){
+                for(Item item:iData.get(i)){
+                    if(item.isChecked()){
+                    System.out.println("选中的名称:"+item.getiName());
+                    }
+                }
+          //  }
+        }
     }
 }

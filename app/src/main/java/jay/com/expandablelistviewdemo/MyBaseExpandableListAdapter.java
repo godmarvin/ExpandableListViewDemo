@@ -31,6 +31,11 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
         this.exlist_lol = exlist_lol;
     }
 
+    public void setCollectedInfo(CollectedInfo collectedInfo){
+
+        this.collectedInfo = collectedInfo;
+    }
+
     @Override
     public int getGroupCount() {
         return gData.size();
@@ -89,6 +94,7 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
                     item.setChecked(groupHolder.checkBoxgroup.isChecked());
                 }
                 notifyDataSetChanged();
+                collectedInfo.collected();//方法回调
             }
         });
         groupHolder.tv_group_name.setText(gData.get(groupPosition).getgName());
@@ -124,17 +130,19 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
                         notifyDataSetChanged();
                     }
                 }
-                if(valiItemChecked(groupPosition,childPosition)){
+                //判断是否全选
+                if(valiItemChecked(groupPosition)){
                     exlist_lol.collapseGroup(groupPosition);
                     gData.get(groupPosition).setChecked(true);
                     notifyDataSetChanged();
                 }
+                collectedInfo.collected();//方法回调
             }
         });
         return convertView;
     }
 
-    public boolean valiItemChecked(final int groupPosition, int childPosition){
+    public boolean valiItemChecked(final int groupPosition){
 
         for (Item item:iData.get(groupPosition)){
             if(!item.isChecked()){
@@ -162,4 +170,10 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
         private CheckBox checkBoxItem;
     }
 
+
+    public CollectedInfo collectedInfo;
+
+    public interface CollectedInfo{
+        public void collected();
+    }
 }
